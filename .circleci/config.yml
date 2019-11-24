@@ -39,5 +39,5 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - chmod +x gradlew
+      - run: chmod +x gradlew
       - run: ./gradlew clean test
