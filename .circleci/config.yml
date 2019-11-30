@@ -39,7 +39,7 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
-      - run: chmod +x gradle
+      - run: chmod +x gradlew
       # run tests and package
       - run: ./gradlew clean test
 
