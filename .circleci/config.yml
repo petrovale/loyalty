@@ -18,8 +18,8 @@ jobs:
 
     environment:
       # Customize the JVM maximum heap limit
-      GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx4500m -XX:+HeapDumpOnOutOfMemoryError"'
-      JVM_OPTS: -Xmx4500m
+      GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx3500m -XX:+HeapDumpOnOutOfMemoryError"'
+      JVM_OPTS: -Xmx3500m
       TERM: dumb
 
     steps:
