@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/petrovale/loyalty.svg?style=svg)](https://circleci.com/gh/petrovale/loyalty)
+
 # loyalty
 
 This application was generated using JHipster 6.5.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.5.0](https://www.jhipster.tech/documentation-archive/v6.5.0).
