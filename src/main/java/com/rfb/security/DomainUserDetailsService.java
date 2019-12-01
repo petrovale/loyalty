@@ -2,9 +2,11 @@ package com.rfb.security;
 
 import com.rfb.domain.User;
 import com.rfb.repository.UserRepository;
+import javax.servlet.http.HttpServletRequest;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,14 +28,26 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public DomainUserDetailsService(UserRepository userRepository) {
+    private HttpServletRequest request;
+
+    private LoginAttemptService loginAttemptService;
+
+    public DomainUserDetailsService(UserRepository userRepository, HttpServletRequest request,
+        LoginAttemptService loginAttemptService) {
         this.userRepository = userRepository;
+        this.request = request;
+        this.loginAttemptService =loginAttemptService;
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {
+        String ipAddress = getClientIP();
         log.debug("Authenticating {}", login);
+
+        if(loginAttemptService.isBlocked(ipAddress) ) {
+            throw new LockedException("blocked");
+        }
 
         if (new EmailValidator().isValid(login, null)) {
             return userRepository.findOneWithAuthoritiesByEmailIgnoreCase(login)
@@ -58,5 +72,13 @@ public class DomainUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getLogin(),
             user.getPassword(),
             grantedAuthorities);
+    }
+
+    private String getClientIP() {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null){
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
     }
 }
