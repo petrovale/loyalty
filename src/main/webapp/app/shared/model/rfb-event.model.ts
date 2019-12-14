@@ -1,5 +1,6 @@
 import { Moment } from 'moment';
 import { IRfbEventAttendance } from 'app/shared/model/rfb-event-attendance.model';
+import { RfbLocation } from 'app/shared/model/rfb-location.model';
 
 export interface IRfbEvent {
   id?: number;
@@ -7,6 +8,7 @@ export interface IRfbEvent {
   eventCode?: string;
   rfbEventAttendances?: IRfbEventAttendance[];
   rfbLocationId?: number;
+  rfbLocationDTO?: RfbLocation;
 }
 
 export class RfbEvent implements IRfbEvent {
